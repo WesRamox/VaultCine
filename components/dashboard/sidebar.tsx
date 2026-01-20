@@ -1,6 +1,6 @@
 "use client";
 
-import { Home } from "lucide-react";
+import { Home, Users } from "lucide-react";
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { NavUser } from "../nav-user/nav-user";
@@ -10,9 +10,14 @@ import { useSession } from "next-auth/react";
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/dashboard",
     icon: Home,
-  }
+  },
+  {
+    title: "Groups",
+    url: "/dashboard/groups",
+    icon: Users,
+  },
 ];
 
 export function DashboardSidebar() {

@@ -3,7 +3,6 @@
 import CreateGroupDialog from "@/components/groups/create-group-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { PlusIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 export default function Dashboard() {
@@ -41,7 +40,8 @@ export default function Dashboard() {
       id: 2,
       name: "Comedy Lovers",
       members: 8,
-      image: "https://files.tecnoblog.net/wp-content/uploads/2021/04/Qual-a-ordem-cronologica-dos-filmes-do-Batman-Deny-Freeman-Flickr.jpg",
+      image:
+        "https://occ-0-8407-2218.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABU7DafMIguftQqa3etO7FgnYfFCTrM5WiFBrA6UX_m9EzNCe2-WS-f7_V6HjXWPo7uv6oSnqbnZ_Im-Dy9MQNdZ2VdvTSCGwzKaU.jpg?r=3d1",
       ratingAverage: 4.5,
       movies: [
         {
@@ -64,60 +64,6 @@ export default function Dashboard() {
         },
       ],
     },
-    {
-      id: 3,
-      name: "Action Fans",
-      members: 15,
-      image: "https://files.tecnoblog.net/wp-content/uploads/2021/04/Qual-a-ordem-cronologica-dos-filmes-do-Batman-Deny-Freeman-Flickr.jpg",
-      ratingAverage: 4.6,
-      movies: [
-        {
-          id: 7,
-          title: "Mad Max: Fury Road",
-          description: "A high-octane action film.",
-          assessment: 4.7,
-        },
-        {
-          id: 8,
-          title: "John Wick",
-          description: "An action-packed revenge thriller.",
-          assessment: 4.6,
-        },
-        {
-          id: 9,
-          title: "The Dark Knight", 
-          description: "A gripping superhero action film.",
-          assessment: 4.8,
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: "Action Fans",
-      members: 15,
-      image: "https://files.tecnoblog.net/wp-content/uploads/2021/04/Qual-a-ordem-cronologica-dos-filmes-do-Batman-Deny-Freeman-Flickr.jpg",
-      ratingAverage: 4.6,
-      movies: [
-        {
-          id: 7,
-          title: "Mad Max: Fury Road",
-          description: "A high-octane action film.",
-          assessment: 4.7,
-        },
-        {
-          id: 8,
-          title: "John Wick",
-          description: "An action-packed revenge thriller.",
-          assessment: 4.6,
-        },
-        {
-          id: 9,
-          title: "The Dark Knight", 
-          description: "A gripping superhero action film.",
-          assessment: 4.8,
-        },
-      ],
-    }
   ];
 
   return (
@@ -133,7 +79,9 @@ export default function Dashboard() {
         <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           {groups.map((group) => (
             <Card key={group.id} className="border flex flex-row py-0">
-              <img src={group.image} alt={group.name} className="h-full w-1/2 object-cover rounded-l-md" />
+              <div className="h-55 w-1/2 object-cover rounded-l-md overflow-hidden">
+                <img src={group.image} alt={group.name} className="w-full h-full" />
+              </div>
               <div className="py-5 flex flex-col gap-5">
                 <CardHeader>
                   <CardTitle className="text-md font-semibold">{group.name}</CardTitle>
