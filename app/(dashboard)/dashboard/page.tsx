@@ -1,6 +1,7 @@
 "use client";
 
-import CreateGroupDialog from "@/components/groups/create-group-dialog";
+import CreateGroupDialog from "@/components/groups/create/create-group-dialog";
+import InviteGroupDialog from "@/components/groups/invite/invite-group-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
@@ -34,8 +35,8 @@ export default function Dashboard() {
         <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           {groups.map((group) => (
             <Card key={group.id} className="border flex flex-row py-0">
-              <div className="h-55 w-1/2 object-cover rounded-l-md overflow-hidden">
-                <Image width={500} height={500} src={group.image} alt={group.name} className="w-full h-full" />
+              <div className="h-55 w-1/2 rounded-l-md overflow-hidden">
+                <Image width={500} height={500} src="/group.png" alt={group.name} className="w-full h-full object-cover" />
               </div>
               <div className="py-5 flex flex-col gap-5">
                 <CardHeader>
@@ -48,7 +49,7 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardFooter className="flex gap-2">
                   <Button>View Group</Button>
-                  <Button variant={"outline"}>Invite to Group</Button>
+                  <InviteGroupDialog groupId={group.id} />
                 </CardFooter>
               </div>
             </Card>

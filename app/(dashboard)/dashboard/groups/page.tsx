@@ -17,7 +17,7 @@ export default function GroupsDashboard() {
         {groups.map((group) => (
           <Card key={group.id} className="overflow-hidden pt-0">
             <div className="relative h-40 w-full">
-              <Image width={500} height={500} src={group.image} alt={group.name} className="h-full w-full object-cover" />
+              <Image width={500} height={500} src="/group.png" alt={group.name} className="h-full w-full object-cover" />
             </div>
 
             <CardHeader>

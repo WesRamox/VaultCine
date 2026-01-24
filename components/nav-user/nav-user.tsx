@@ -1,11 +1,12 @@
 "use client";
 
-import { ChevronsUpDown, LogOut, Sparkles } from "lucide-react";
+import { ChevronsUpDown, LogOut, Sparkles, SunIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { signOut } from "next-auth/react";
+import ThemeSettingsDialog from "../dashboard/theme-settings/theme-settings-dialog";
 
 interface NavUserProps {
   user?: {
@@ -57,9 +58,8 @@ export function NavUser({ user }: NavUserProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+              <DropdownMenuItem asChild>
+                <ThemeSettingsDialog />
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

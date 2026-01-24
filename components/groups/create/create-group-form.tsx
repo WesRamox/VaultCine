@@ -1,18 +1,23 @@
 "use client"
 
 import { useState } from "react";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import * as z from "zod";
-import { DialogClose, DialogFooter } from "../ui/dialog";
-import { Button } from "../ui/button";
+import { DialogClose, DialogFooter } from "../../ui/dialog";
+import { Button } from "../../ui/button";
+import { groups } from "@/mock/groups";
 
 export default function CreateGroupForm() {
   const [formData, setFormData] = useState({
+    id: (groups.length + 1).toString(),
     name: "",
     description: "",
     type: "",
+    members: 0,
+    ratingAverage: 0,
+    movies: [],
   });
 
   const CreateGroupFormSchema = z.object({
@@ -31,6 +36,9 @@ export default function CreateGroupForm() {
       console.error("Form validation errors:", validation.error.format());
       return;
     }
+
+    // Proceed with form submission (e.g., send data to the server)
+
   }
 
   return (
