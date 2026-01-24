@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 // Menu items.
 const items = [
   {
-    title: "Home",
+    title: "Dashboard",
     url: "/dashboard",
     icon: Home,
   },

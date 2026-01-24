@@ -3,18 +3,29 @@
 import CreateGroupDialog from "@/components/groups/create-group-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import { groups } from "@/mock/groups";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 export default function Dashboard() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return <Spinner />;
+  }
+
+  if (status === "unauthenticated") {
+    redirect("/login");
+  }
 
   return (
-    <Card className="w-full flex bg-linear-to-br from-background to-muted p-4">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold pt-6">Welcome back, {session?.user?.name}!</CardTitle>
-      </CardHeader>
+    <section className="w-full flex-col gap-6 flex bg-linear-to-br from-background to-muted">
+      <header>
+        <h1 className="text-2xl font-bold">Welcome back, {session?.user?.name}!</h1>
+        <p className="text-muted-foreground">Are you ready to explore your groups and the movies you&apos;ve watched?</p>
+      </header>
       <Card>
         <CardHeader className="text-lg font-medium">
           <CardTitle>My Groups</CardTitle>
@@ -45,6 +56,6 @@ export default function Dashboard() {
           <CreateGroupDialog />
         </CardContent>
       </Card>
-    </Card>
+    </section>
   );
 }

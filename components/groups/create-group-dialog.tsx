@@ -15,12 +15,6 @@ export default function CreateGroupDialog() {
           <DialogDescription>Create a group with your partner or friends to save movies you’ve watched together and rate them.</DialogDescription>
         </DialogHeader>
         <CreateGroupForm />
-        <DialogFooter className="mt-4">
-          <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogClose>
-          <Button type="submit">Create Group</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

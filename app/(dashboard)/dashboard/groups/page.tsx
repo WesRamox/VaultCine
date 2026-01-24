@@ -6,7 +6,6 @@ import { groups } from "@/mock/groups";
 import Image from "next/image";
 
 export default function GroupsDashboard() {
-
   return (
     <section className="space-y-6">
       <header>
