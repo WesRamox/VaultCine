@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from "../ui/breadcrumb";
+import Link from "next/link";
 
 export default function DashboardBreadcrumb() {
   const pathname = usePathname();
@@ -24,7 +25,9 @@ export default function DashboardBreadcrumb() {
         {paths.map((item, index) => (
           <div key={item.href} className="flex items-center gap-2">
             {index > 0 && <BreadcrumbSeparator />}
-            <BreadcrumbItem>{<span className="text-muted-foreground">{item.label}</span>}</BreadcrumbItem>
+            <BreadcrumbItem>
+              <Link href={item.href} className="text-muted-foreground">{item.label}</Link>
+            </BreadcrumbItem>
           </div>
         ))}
       </BreadcrumbList>

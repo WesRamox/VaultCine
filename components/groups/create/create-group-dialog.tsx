@@ -6,7 +6,7 @@ export default function CreateGroupDialog() {
   return (
     <Dialog>
       <DialogTrigger>
-        <div className="h-full w-full text-2xl flex gap-2 justify-center items-center rounded-lg bg-blue-500 text-white hover:bg-blue-600 hover:text-white cursor-pointer">
+        <div className="p-4 text-xl h-full w-full flex gap-2 justify-center items-center rounded-lg bg-blue-500 text-white hover:bg-blue-600 hover:text-white cursor-pointer">
           <PlusIcon size={30} /> Create a new group
         </div>
       </DialogTrigger>

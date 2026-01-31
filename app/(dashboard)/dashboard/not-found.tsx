@@ -13,7 +13,7 @@ export default function NotFound() {
       </div>
 
       <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl mb-2">Page Not Found</h1>
-      <p className="text-muted-foreground max-w-[500px] mb-8">Oops! It looks like this page does not exist or you do not have permission to access it. Please check the address.</p>
+      <p className="text-muted-foreground max-w-125 mb-8">Oops! It looks like this page does not exist or you do not have permission to access it. Please check the address.</p>
 
       <div className="flex flex-col sm:flex-row gap-4">
         <Button asChild variant="default">

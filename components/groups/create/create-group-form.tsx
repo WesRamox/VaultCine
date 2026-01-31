@@ -65,6 +65,7 @@ export default function CreateGroupForm() {
         position: "top-center",
       });
 
+      document.getElementById("close-dialog")?.click();
       router.refresh();
     } catch (error) {
       toast.error("Connection Error", {
@@ -101,7 +102,7 @@ export default function CreateGroupForm() {
         </div>
       </div>
       <DialogFooter className="mt-4">
-        <DialogClose asChild>
+        <DialogClose id="close-dialog" asChild>
           <Button variant="outline">Cancel</Button>
         </DialogClose>
         <Button type="submit">Create Group</Button>

@@ -4,7 +4,6 @@ import GroupList from "@/components/groups/list/group-list";
 import { Suspense } from "react";
 import { GroupListSkeleton } from "@/components/groups/list/group-list-skeleton";
 
-
 export default async function GroupsDashboard() {
   const session = await getServerSession(authOptions);
 
@@ -19,7 +18,7 @@ export default async function GroupsDashboard() {
         <p className="text-muted-foreground">See your groups and the movies you&apos;ve watched.</p>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 w-full">
         <Suspense fallback={<GroupListSkeleton />}>
           <GroupList userId={session.user.id} />
         </Suspense>

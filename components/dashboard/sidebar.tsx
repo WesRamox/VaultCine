@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Users, User2Icon } from "lucide-react";
+import { Home, Users, User2Icon, Popcorn } from "lucide-react";
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { NavUser } from "../nav-user/nav-user";
@@ -27,6 +27,11 @@ const items = [
     title: "Groups",
     url: "/dashboard/groups",
     icon: Users,
+  },
+  {
+    title: "Movies",
+    url: "/dashboard/movies",
+    icon: Popcorn
   },
   {
     title: "Profile",

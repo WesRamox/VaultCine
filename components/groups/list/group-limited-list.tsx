@@ -4,6 +4,7 @@ import Image from "next/image";
 import InviteGroupDialog from "../invite/invite-group-dialog";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 interface GroupLimitedListProps {
   session: {
@@ -24,10 +25,17 @@ export default async function GroupLimitedList({ session }: GroupLimitedListProp
     },
     include: {
       members: true,
+      movies: true,
     },
   });
 
   const lastGroups = groups.slice(-3).reverse();
+
+  const typeStyles = {
+    COUPLE: "bg-pink-500 hover:bg-pink-600",
+    FRIENDS: "bg-green-500 hover:bg-green-600",
+    FAMILY: "bg-blue-500 hover:bg-blue-600",
+  };
   return (
     <>
       {lastGroups.map((group) => (
@@ -35,16 +43,18 @@ export default async function GroupLimitedList({ session }: GroupLimitedListProp
           <div className="h-55 w-1/2 rounded-l-md overflow-hidden">
             <Image width={500} height={500} src="/group.png" alt={group.name} className="w-full h-full object-cover" />
           </div>
-          <div className="py-5 flex flex-col gap-5">
+          <div className="py-5 flex flex-col w-full gap-5">
             <CardHeader>
-              <CardTitle className="text-md font-semibold">{group.name}</CardTitle>
+              <CardTitle className="text-md font-semibold justify-between flex items-center gap-2">
+                {group.name}
+                <Badge className={typeStyles[group.type]}>{group.type}</Badge>
+              </CardTitle>
               <CardDescription>{group.members.length} members</CardDescription>
               <CardContent className="mt-2 px-0">
-                <h2>Movies watched: 0</h2>
-                <p className="flex gap-1 items-center">⭐ 5 Average</p>
+                <h2>Movies watched: {group.movies.length}</h2>
               </CardContent>
             </CardHeader>
-            <CardFooter className="flex gap-2">
+            <CardFooter className="flex gap-2 md:flex-row flex-col">
               <Button asChild>
                 <Link className="mr-2" href={`/dashboard/groups/${group.id}`}>
                   View Group
