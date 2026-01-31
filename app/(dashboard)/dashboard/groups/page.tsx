@@ -3,26 +3,33 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import GroupList from "@/components/groups/list/group-list";
 import { Suspense } from "react";
 import { GroupListSkeleton } from "@/components/groups/list/group-list-skeleton";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export default async function GroupsDashboard() {
   const session = await getServerSession(authOptions);
 
-  if (!session?.user?.id) {
-    return null;
-  }
+  if (!session?.user?.id) return null;
 
   return (
-    <section className="space-y-6 w-full flex flex-col">
-      <header>
-        <h1 className="text-2xl font-bold">Your Groups</h1>
-        <p className="text-muted-foreground">See your groups and the movies you&apos;ve watched.</p>
+    <section className="mx-auto container py-6 space-y-8">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-black tracking-tight">Your Groups</h1>
+          <p className="text-muted-foreground text-sm">Manage your movie circles and collective ratings.</p>
+        </div>
+
+        <Button asChild className="font-bold shadow-sm">
+          <Link href="/dashboard/groups/create">
+            <Plus className="mr-2 h-4 w-4" /> Create New Group
+          </Link>
+        </Button>
       </header>
 
-      <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 w-full">
-        <Suspense fallback={<GroupListSkeleton />}>
-          <GroupList userId={session.user.id} />
-        </Suspense>
-      </div>
+      <Suspense fallback={<GroupListSkeleton />}>
+        <GroupList userId={session.user.id} />
+      </Suspense>
     </section>
   );
 }

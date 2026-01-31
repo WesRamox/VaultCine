@@ -1,41 +1,159 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { UserPlus, Film, Star, TrendingUp, Hash, ListChecks } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import InviteGroupForm from "@/components/groups/invite/invite-group-form";
 
 interface GroupPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 export default async function GroupPage({ params }: GroupPageProps) {
   const { id } = await params;
   const session = await getServerSession(authOptions);
 
-  if (!session?.user?.id) {
-    return <div>Unauthorized</div>;
-  }
+  if (!session?.user?.id) redirect("/login");
 
-  const group = await prisma.group.findFirst({
-    where: {
-      id: id,
-      OR: [{ ownerId: session.user.id }, { members: { some: { userId: session.user.id } } }],
-    },
+  const group = await prisma.group.findUnique({
+    where: { id },
     include: {
-      members: true,
+      members: {
+        include: { user: true },
+      },
     },
   });
 
-  if (!group) {
-    return notFound();
-  }
+  if (!group) return notFound();
+
+  const isOwner = group.ownerId === session.user.id;
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">Group ID: {id}</h1>
-      <p className="text-muted-foreground">This is the page for group with ID {id}.</p>
-      <pre className="mt-4 p-4 rounded">{JSON.stringify(group, null, 2)}</pre>
+    <div className="container py-8 max-w-7xl mx-auto space-y-8">
+      <section className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="space-y-1">
+          <h1 className="text-4xl font-black tracking-tighter uppercase italic text-primary">
+            {group.name} <span className="text-muted-foreground/50 text-2xl">/ Catalog</span>
+          </h1>
+          <p className="text-muted-foreground font-medium">{group.description}</p>
+        </div>
+
+        <div className="flex gap-3">
+          <Button variant="default" className="font-bold px-6 shadow-lg shadow-primary/20">
+            <Star className="w-4 h-4 mr-2 fill-current" /> Rate New Movie
+          </Button>
+          {isOwner && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="font-semibold border-2">
+                  <UserPlus className="w-4 h-4 mr-2" /> Invite
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Invite Member</DialogTitle>
+                </DialogHeader>
+                <InviteGroupForm groupId={group.id} />
+              </DialogContent>
+            </Dialog>
+          )}
+        </div>
+      </section>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="bg-primary text-primary-foreground border-none">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <Hash size={24} className="opacity-50" />
+              <span className="text-3xl font-black">0</span>
+            </div>
+            <p className="text-xs font-bold uppercase mt-2 opacity-80">Total Movies Watched</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between text-yellow-500">
+              <Star size={24} className="fill-current" />
+              <span className="text-3xl font-black text-foreground">0.0</span>
+            </div>
+            <p className="text-xs text-muted-foreground font-bold uppercase mt-2">Group Avg Rating</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between text-blue-500">
+              <TrendingUp size={24} />
+              <span className="text-3xl font-black text-foreground">0</span>
+            </div>
+            <p className="text-xs text-muted-foreground font-bold uppercase mt-2">Active Critics</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between text-green-500">
+              <ListChecks size={24} />
+              <span className="text-3xl font-black text-foreground">0</span>
+            </div>
+            <p className="text-xs text-muted-foreground font-bold uppercase mt-2">Pending Reviews</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-9">
+          <Card className="border-2 shadow-none min-h-[400px]">
+            <CardHeader className="border-b bg-muted/20">
+              <CardTitle className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
+                <Film size={16} /> Movie Log
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center justify-center p-20 text-center">
+              <div className="border-4 border-dashed rounded-full p-8 mb-4">
+                <Film size={48} className="text-muted-foreground/20" />
+              </div>
+              <h3 className="text-xl font-bold">The Archive is Empty</h3>
+              <p className="text-muted-foreground max-w-xs mx-auto mt-2">No movies have been logged yet. Start building your groups cinematic history.</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <aside className="lg:col-span-3 space-y-6">
+          <div>
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mb-4">Board Members</h4>
+            <div className="space-y-4">
+              {group.members.map((member) => (
+                <div key={member.id} className="flex items-center gap-3">
+                  <Avatar className="w-10 h-10 border-2 border-background ring-2 ring-muted shrink-0">
+                    <AvatarImage src={member.user.image || ""} />
+                    <AvatarFallback>{member.user.name?.[0]}</AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold truncate leading-none mb-1">{member.user.name}</p>
+                    {group.ownerId === member.userId ? (
+                      <span className="text-[10px] font-black text-primary uppercase">Founder</span>
+                    ) : (
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase">Critic</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <Separator />
+
+          <div className="bg-muted p-4 rounded-xl">
+            <p className="text-[10px] font-black uppercase mb-2">Group Insights</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">Once movies are rated, this section will display the most watched genres and top-rated directors by the group.</p>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import InviteGroupForm from "./invite-group-form";
 import { Button } from "@/components/ui/button";
+import { UserPlus } from "lucide-react";
 
 interface InviteGroupDialogProps {
   groupId: string;
@@ -10,7 +11,7 @@ export default function InviteGroupDialog({ groupId }: InviteGroupDialogProps) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant={"outline"}>Invite to Group</Button>
+        <Button className="cursor-pointer" variant={"outline"}><UserPlus size={16} className="text-muted-foreground" /> Invite to Group</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

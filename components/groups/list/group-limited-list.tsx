@@ -5,6 +5,7 @@ import InviteGroupDialog from "../invite/invite-group-dialog";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { Users, Film, Eye } from "lucide-react";
 
 interface GroupLimitedListProps {
   session: {
@@ -36,28 +37,33 @@ export default async function GroupLimitedList({ session }: GroupLimitedListProp
     FRIENDS: "bg-green-500 hover:bg-green-600",
     FAMILY: "bg-blue-500 hover:bg-blue-600",
   };
+
   return (
     <>
       {lastGroups.map((group) => (
-        <Card key={group.id} className="border flex flex-row py-0">
-          <div className="h-55 w-1/2 rounded-l-md overflow-hidden">
+        <Card key={group.id} className="border flex flex-row py-0 overflow-hidden">
+          <div className="h-55 w-1/2 overflow-hidden">
             <Image width={500} height={500} src="/group.png" alt={group.name} className="w-full h-full object-cover" />
           </div>
           <div className="py-5 flex flex-col w-full gap-5">
             <CardHeader>
               <CardTitle className="text-md font-semibold justify-between flex items-center gap-2">
                 {group.name}
-                <Badge className={typeStyles[group.type]}>{group.type}</Badge>
+                <Badge className={typeStyles[group.type as keyof typeof typeStyles]}>{group.type}</Badge>
               </CardTitle>
-              <CardDescription>{group.members.length} members</CardDescription>
+              <CardDescription className="flex items-center gap-1.5">
+                <Users size={14} /> {group.members.length} members
+              </CardDescription>
               <CardContent className="mt-2 px-0">
-                <h2>Movies watched: {group.movies.length}</h2>
+                <h2 className="flex items-center gap-1.5 text-sm font-medium">
+                  <Film size={14} /> Movies watched: {group.movies.length}
+                </h2>
               </CardContent>
             </CardHeader>
             <CardFooter className="flex gap-2 md:flex-row flex-col">
-              <Button asChild>
-                <Link className="mr-2" href={`/dashboard/groups/${group.id}`}>
-                  View Group
+              <Button asChild className="gap-2">
+                <Link href={`/dashboard/groups/${group.id}`}>
+                  <Eye size={16} /> View Group
                 </Link>
               </Button>
               {group.ownerId == session.user.id && <InviteGroupDialog groupId={group.id} />}
