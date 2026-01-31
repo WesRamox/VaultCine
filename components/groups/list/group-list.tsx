@@ -22,7 +22,7 @@ export default async function GroupList({ userId }: { userId: string }) {
   return (
     <>
       {groups.map((group) => (
-        <Card key={group.id} className="border flex py-0 flex-col w-full">
+        <Card key={group.id} className="border flex py-0 flex-col w-full min-w-3xs">
           <div className="relative h-40 w-full">
             <Image width={500} height={500} src="/group.png" alt={group.name} className="h-full w-full object-cover" />
           </div>
@@ -30,10 +30,10 @@ export default async function GroupList({ userId }: { userId: string }) {
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               {group.name}
-              <Badge variant="secondary">2 Members</Badge>
+              <Badge variant="secondary">{group.members.length} Members</Badge>
             </CardTitle>
 
-            <CardDescription>⭐ Average: 11</CardDescription>
+            {/* <CardDescription>⭐ Average: 11</CardDescription> */}
           </CardHeader>
 
           <CardContent className="space-y-4">

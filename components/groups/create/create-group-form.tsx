@@ -7,6 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import * as z from "zod";
 import { DialogClose, DialogFooter } from "../../ui/dialog";
 import { Button } from "../../ui/button";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const CreateGroupFormSchema = z.object({
   name: z.string().min(3, "Group name must be at least 3 characters long"),
@@ -19,6 +21,7 @@ const CreateGroupFormSchema = z.object({
 export type CreateGroupFormData = z.infer<typeof CreateGroupFormSchema>;
 
 export default function CreateGroupForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState<CreateGroupFormData>({
     name: "",
     description: "",
@@ -28,44 +31,64 @@ export default function CreateGroupForm() {
   const onSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     const validation = CreateGroupFormSchema.safeParse(formData);
-    console.log("Validation result:", validation);
+
     if (!validation.success) {
-      console.error("Form validation errors:", validation.error.format());
+      toast.error("Validation Error", {
+        description: "Please check the form fields.",
+        position: "top-center",
+      });
       return;
     }
 
-    const response = await fetch("/api/groups", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(validation.data),
-    });
+    try {
+      const response = await fetch("/api/groups", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(validation.data),
+      });
 
-    if (!response.ok) {
-      const error = await response.json();
+      if (!response.ok) {
+        const error = await response.json();
+        toast.error("Error creating group", {
+          description: error.message || "An unexpected error occurred.",
+          position: "top-center",
+        });
+        return;
+      }
+
+      const group = await response.json();
+
+      toast.success("Group created!", {
+        description: `The group "${group.name}" has been created successfully.`,
+        position: "top-center",
+      });
+
+      router.refresh();
+    } catch (error) {
+      toast.error("Connection Error", {
+        description: "Could not reach the server.",
+        position: "top-center",
+      });
       console.error("Error creating group:", error);
-      return;
     }
-
-    const group = await response.json();
-    console.log("Group created successfully:", group);
   };
 
   return (
     <form onSubmit={onSubmit}>
       <div className="grid gap-4">
         <div className="grid gap-3">
-          <Label htmlFor="group-name-1">Group Name</Label>
-          <Input id="group-name-1" name="group-name" placeholder="The Best's" onChange={(ev) => setFormData((prev) => ({ ...prev, name: ev.target.value }))} />
+          <Label htmlFor="group-name">Group Name</Label>
+          <Input id="group-name" placeholder="The Dream Team" onChange={(ev) => setFormData((prev) => ({ ...prev, name: ev.target.value }))} />
         </div>
         <div className="grid gap-3">
-          <Label htmlFor="description-1">Description</Label>
-          <Input id="description-1" name="description" placeholder="This is a test" onChange={(ev) => setFormData((prev) => ({ ...prev, description: ev.target.value }))} />
+          <Label htmlFor="description">Description</Label>
+          <Input id="description" placeholder="A group for our movie nights" onChange={(ev) => setFormData((prev) => ({ ...prev, description: ev.target.value }))} />
         </div>
         <div className="grid gap-3">
-          <Label htmlFor="type-1">Type Group</Label>
-          <Select onValueChange={(value) => setFormData((prev) => ({ ...prev, type: value as CreateGroupFormData["type"] }))}>
+          <Label htmlFor="type">Group Type</Label>
+          <Select defaultValue="COUPLE" onValueChange={(value) => setFormData((prev) => ({ ...prev, type: value as CreateGroupFormData["type"] }))}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a type" />
             </SelectTrigger>

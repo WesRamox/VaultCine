@@ -19,8 +19,7 @@ export default async function GroupsDashboard() {
         <p className="text-muted-foreground">See your groups and the movies you&apos;ve watched.</p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-        {/* I can and will change it to a Shadcn skeleton. */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
         <Suspense fallback={<GroupListSkeleton />}>
           <GroupList userId={session.user.id} />
         </Suspense>
