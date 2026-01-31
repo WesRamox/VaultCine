@@ -1,31 +1,43 @@
 # 🎬 MoviesGroup
 
-Plataforma web para criação de **grupos de filmes**, onde usuários autenticados podem criar grupos, convidar membros e avaliar filmes juntos.
+Web platform for creating **movie groups**, where authenticated users can create groups, invite members, and rate movies together.
 
 ---
 
 ## 🧱 Stack
 
 - **Next.js (App Router)**
-- **NextAuth (Auth.js)** – Login com Google
+- **NextAuth (Auth.js)** – Google login
 - **Prisma ORM**
 - **PostgreSQL**
 - **Docker + Docker Compose**
-- **Zod** – Validação de dados
+- **Zod** – Data validation
 
 ---
 
-## 🔐 Autenticação
+## 🎯 Focus & Expertise
 
-Autenticação feita com **NextAuth + Prisma Adapter**.
+This project is designed to demonstrate **Full Stack expertise**, with a strong emphasis on:
 
-- Login exclusivamente via **Google**
-- Sessões persistidas no banco (`strategy: "database"`)
-- Prisma usado **somente no backend / server components**
+- **Backend architecture and API design**
+- **Authentication and authorization flows**
+- **Database modeling with Prisma**
+- **Server-side logic using Server Components**
+- **Clean separation between frontend and backend responsibilities**
 
 ---
 
-## 🗂️ Estrutura de pastas (simplificada)
+## 🔐 Authentication
+
+Authentication handled with **NextAuth + Prisma Adapter**.
+
+- Login exclusively via **Google**
+- Sessions persisted in the database (`strategy: "database"`)
+- Prisma used **only on the backend / server components**
+
+---
+
+## 🗂️ Folder structure (simplified)
 
 ```
 app/
@@ -55,7 +67,7 @@ prisma/
 
 ---
 
-## 📡 Rotas da API
+## 📡 API Routes
 
 ### 🔑 Auth
 
@@ -67,33 +79,33 @@ prisma/
 
 ### 👥 Groups
 
-- [x] `POST /api/groups` → Criar grupo
-- [x] `GET /api/groups` → Listar grupos do usuário
-- [ ] `GET /api/groups/:id` → Detalhes do grupo
-- [ ] `POST /api/groups/:id/members` → Adicionar membro
-- [ ] `DELETE /api/groups/:id/members/:userId` → Remover membro
+- [x] `POST /api/groups` → Create group  
+- [x] `GET /api/groups` → List user groups  
+- [ ] `GET /api/groups/:id` → Group details  
+- [ ] `POST /api/groups/:id/members` → Add member  
+- [ ] `DELETE /api/groups/:id/members/:userId` → Remove member  
 
 ---
 
-## 🧬 Modelos principais (Prisma)
+## 🧬 Main Models (Prisma)
 
 ### User
-- Criado automaticamente ao login com Google
-- Relacionado a grupos e sessões
+- Automatically created on Google login
+- Related to groups and sessions
 
 ### Group
-- Possui dono (`owner`)
-- Possui membros (`GroupMember`)
+- Has an owner (`owner`)
+- Has members (`GroupMember`)
 
 ### GroupMember
-- Relação N:N entre `User` e `Group`
-- Define papel: `owner | member`
+- N:N relationship between `User` and `Group`
+- Defines role: `owner | member`
 
 ---
 
-## 📦 Como rodar o projeto
+## 📦 Running the project
 
-### 1️⃣ Clonar o repositório
+### 1️⃣ Clone the repository
 
 ```bash
 git clone <repo-url>
@@ -102,16 +114,16 @@ cd moviesgroup
 
 ---
 
-### 2️⃣ Variáveis de ambiente
+### 2️⃣ Environment variables
 
-Crie um arquivo `.env`:
+Create a `.env` file:
 
 ```env
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=super-secret-key
 
-GOOGLE_CLIENT_ID=seu_client_id
-GOOGLE_CLIENT_SECRET=seu_client_secret
+GOOGLE_CLIENT_ID=your_client_id
+GOOGLE_CLIENT_SECRET=your_client_secret
 
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/app_db"
 NODE_ENV=development
@@ -119,17 +131,15 @@ NODE_ENV=development
 
 ---
 
-### 3️⃣ Subir o banco com Docker
+### 3️⃣ Start the database with Docker
 
 ```bash
 docker-compose up -d
 ```
 
-> Isso irá subir um PostgreSQL local
-
 ---
 
-### 4️⃣ Instalar dependências
+### 4️⃣ Install dependencies
 
 ```bash
 npm install
@@ -137,13 +147,13 @@ npm install
 
 ---
 
-### 5️⃣ Rodar migrations do Prisma
+### 5️⃣ Run Prisma migrations
 
 ```bash
 npx prisma migrate dev
 ```
 
-Para abrir o Prisma Studio:
+To open Prisma Studio:
 
 ```bash
 npx prisma studio
@@ -151,36 +161,36 @@ npx prisma studio
 
 ---
 
-### 6️⃣ Rodar o projeto
+### 6️⃣ Run the project
 
 ```bash
 npm run dev
 ```
 
-Acesse: `http://localhost:3000`
+Access: `http://localhost:3000`
 
 ---
 
-## 🧠 Boas práticas adotadas
+## 🧠 Best practices applied
 
-- ✅ Prisma usado **apenas no backend / server**
-- ✅ Server Components para páginas protegidas
-- ✅ Client Components apenas para interação
-- ✅ Validação de dados com **Zod (DTOs)**
-- ✅ Autorização baseada na sessão (`getServerSession`)
+- ✅ Prisma used **only on the backend / server**
+- ✅ Server Components for protected pages
+- ✅ Client Components only for interactions
+- ✅ Data validation with **Zod (DTOs)**
+- ✅ Session-based authorization (`getServerSession`)
 
 ---
 
-## 🚀 Próximos passos
+## 🚀 Next steps
 
-- [ ] Página de detalhes do grupo
-- [ ] Sistema de convites
-- [ ] Avaliação de filmes por grupo
-- [ ] Permissões (owner vs member)
+- [ ] Group details page
+- [ ] Invitation system
+- [ ] Movie rating per group
+- [ ] Permissions (owner vs member)
 - [ ] Deploy (Railway / Vercel)
 
 ---
 
-## 🧑‍💻 Autor
+## 🧑‍💻 Author
 
-Desenvolvido por **Wesley Ramos** 🚀
+Developed by **Wesley Ramos** 🚀
