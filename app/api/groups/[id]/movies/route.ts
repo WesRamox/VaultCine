@@ -1,11 +1,11 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { NextRequest, NextResponse } from "next/server"; // Importe NextRequest
+import { NextRequest, NextResponse } from "next/server"; 
 
 export async function POST(
   req: NextRequest,
-  context: { params: Promise<{ id: string }> } // Tipagem correta para Next.js 15
+  context: { params: Promise<{ id: string }> } 
 ) {
   try {
     const session = await getServerSession(authOptions);

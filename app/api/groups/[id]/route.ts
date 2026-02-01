@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth';
 
@@ -10,13 +10,13 @@ export async function GET(request: Request, { params }: { params: { id: string }
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> } 
 ) {
   try {
     const session = await getServerSession(authOptions);
 
-    const { id } = params;
+    const { id } = await context.params;
 
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
