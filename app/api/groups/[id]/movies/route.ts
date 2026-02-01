@@ -1,15 +1,16 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server"; // Importe NextRequest
 
 export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> } // Tipagem correta para Next.js 15
 ) {
   try {
     const session = await getServerSession(authOptions);
-    const { id } = await params;
+
+    const { id } = await context.params;
 
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -38,6 +39,7 @@ export async function POST(
 
     return NextResponse.json(movie);
   } catch (error) {
-    return new NextResponse("Internal Error:" + error, { status: 500 });
+    console.error("[MOVIE_POST]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
