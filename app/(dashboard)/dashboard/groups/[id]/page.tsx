@@ -10,6 +10,7 @@ import { UserPlus, Film, Star, TrendingUp, Hash } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import InviteGroupForm from "@/components/groups/invite/invite-group-form";
 import RateMovieDialog from "@/components/groups/movies/rate-movie-dialog";
+import DeleteGroupButton from "@/components/groups/delete/delete-group-button";
 
 interface GroupPageProps {
   params: Promise<{ id: string }>;
@@ -65,6 +66,7 @@ export default async function GroupPage({ params }: GroupPageProps) {
               </DialogContent>
             </Dialog>
           )}
+          <DeleteGroupButton groupId={group.id} />
         </div>
       </section>
 
@@ -121,7 +123,7 @@ export default async function GroupPage({ params }: GroupPageProps) {
                     <div key={movie.id} className={`group flex items-center justify-between p-6 transition-colors hover:bg-muted/30 ${index !== group.movies.length - 1 ? "border-b" : ""}`}>
                       <div className="flex items-center gap-6 min-w-0">
                         <span className="text-muted-foreground/30 font-black text-xl italic w-8">{(index + 1).toString().padStart(2, "0")}</span>
-                        <div className="space-y-1">
+                        <div className="space-y-1 text-start">
                           <h4 className="font-black uppercase italic tracking-tighter text-lg leading-none group-hover:text-primary transition-colors truncate">{movie.title}</h4>
                           <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Entry secured in group archive</p>
                         </div>

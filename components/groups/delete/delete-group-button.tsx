@@ -35,7 +35,7 @@ export default function DeleteGroupButton({ groupId }: { groupId: string }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"default"} size="icon" className="h-8 w-8 cursor-pointer text-destructive hover:text-black hover:bg-destructive/90">
+        <Button variant={"outline"} size="icon" className="h-8 w-8 cursor-pointer text-destructive hover:bg-destructive/90">
           <Trash2 className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
