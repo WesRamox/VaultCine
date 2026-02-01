@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Users, User2Icon, Popcorn, X, CheckIcon, Mail } from "lucide-react";
+import { Home, Users, User2Icon, X, CheckIcon, Mail } from "lucide-react";
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { NavUser } from "../nav-user/nav-user";
@@ -36,11 +36,6 @@ const items = [
     title: "Groups",
     url: "/dashboard/groups",
     icon: Users,
-  },
-  {
-    title: "Movies",
-    url: "/dashboard/movies",
-    icon: Popcorn,
   },
   {
     title: "Profile",
@@ -118,7 +113,7 @@ export function DashboardSidebar({ session, pendingInvites }: DashboardSidebarPr
                   <DropdownMenuContent align="start" className="w-80 p-0">
                     <DropdownMenuLabel className="p-4">Pending Invites ({pendingInvites.length})</DropdownMenuLabel>
                     <DropdownMenuSeparator className="m-0" />
-                    <div className="max-h-[300px] overflow-y-auto">
+                    <div className="max-h-75 overflow-y-auto">
                       {pendingInvites.length === 0 ? (
                         <div className="p-8 text-center text-sm text-muted-foreground">No pending invites</div>
                       ) : (

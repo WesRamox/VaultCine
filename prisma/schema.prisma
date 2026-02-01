@@ -83,7 +83,7 @@ model Movie {
   rating Float?
 
   groupId String
-  group   Group  @relation(fields: [groupId], references: [id])
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
 }
 
 model GroupMember {
@@ -94,7 +94,7 @@ model GroupMember {
   role    String @default("member") // owner | member
 
   user  User  @relation(fields: [userId], references: [id])
-  group Group @relation(fields: [groupId], references: [id])
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
   @@unique([userId, groupId])
 }
@@ -108,7 +108,7 @@ enum InviteStatus {
 model Invite {
   id        String       @id @default(cuid())
   groupId   String
-  group     Group        @relation(fields: [groupId], references: [id])
+  group     Group        @relation(fields: [groupId], references: [id], onDelete: Cascade)
   email     String
   senderId  String
   status    InviteStatus

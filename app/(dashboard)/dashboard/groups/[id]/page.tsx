@@ -2,14 +2,14 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { UserPlus, Film, Star, TrendingUp, Hash, ListChecks } from "lucide-react";
+import { UserPlus, Film, Star, TrendingUp, Hash } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import InviteGroupForm from "@/components/groups/invite/invite-group-form";
+import RateMovieDialog from "@/components/groups/movies/rate-movie-dialog";
 
 interface GroupPageProps {
   params: Promise<{ id: string }>;
@@ -27,12 +27,16 @@ export default async function GroupPage({ params }: GroupPageProps) {
       members: {
         include: { user: true },
       },
+      movies: true,
     },
   });
 
   if (!group) return notFound();
 
   const isOwner = group.ownerId === session.user.id;
+
+  const totalRating = group.movies.reduce((acc, movie) => acc + (movie.rating ?? 0), 0);
+  const groupAverageRating = group.movies.length > 0 ? totalRating / group.movies.length : 0;
 
   return (
     <div className="container py-8 max-w-7xl mx-auto space-y-8">
@@ -45,9 +49,7 @@ export default async function GroupPage({ params }: GroupPageProps) {
         </div>
 
         <div className="flex gap-3">
-          <Button variant="default" className="font-bold px-6 shadow-lg shadow-primary/20">
-            <Star className="w-4 h-4 mr-2 fill-current" /> Rate New Movie
-          </Button>
+          <RateMovieDialog groupId={group.id} />
           {isOwner && (
             <Dialog>
               <DialogTrigger asChild>
@@ -66,12 +68,12 @@ export default async function GroupPage({ params }: GroupPageProps) {
         </div>
       </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="bg-primary text-primary-foreground border-none">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <Hash size={24} className="opacity-50" />
-              <span className="text-3xl font-black">0</span>
+              <span className="text-3xl font-black">{group.movies.length}</span>
             </div>
             <p className="text-xs font-bold uppercase mt-2 opacity-80">Total Movies Watched</p>
           </CardContent>
@@ -80,7 +82,7 @@ export default async function GroupPage({ params }: GroupPageProps) {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between text-yellow-500">
               <Star size={24} className="fill-current" />
-              <span className="text-3xl font-black text-foreground">0.0</span>
+              <span className="text-3xl font-black text-foreground">{groupAverageRating.toFixed(1)}</span>
             </div>
             <p className="text-xs text-muted-foreground font-bold uppercase mt-2">Group Avg Rating</p>
           </CardContent>
@@ -89,18 +91,9 @@ export default async function GroupPage({ params }: GroupPageProps) {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between text-blue-500">
               <TrendingUp size={24} />
-              <span className="text-3xl font-black text-foreground">0</span>
+              <span className="text-3xl font-black text-foreground">{group.members.length}</span>
             </div>
             <p className="text-xs text-muted-foreground font-bold uppercase mt-2">Active Critics</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between text-green-500">
-              <ListChecks size={24} />
-              <span className="text-3xl font-black text-foreground">0</span>
-            </div>
-            <p className="text-xs text-muted-foreground font-bold uppercase mt-2">Pending Reviews</p>
           </CardContent>
         </Card>
       </div>
@@ -113,12 +106,42 @@ export default async function GroupPage({ params }: GroupPageProps) {
                 <Film size={16} /> Movie Log
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col items-center justify-center p-20 text-center">
-              <div className="border-4 border-dashed rounded-full p-8 mb-4">
-                <Film size={48} className="text-muted-foreground/20" />
-              </div>
-              <h3 className="text-xl font-bold">The Archive is Empty</h3>
-              <p className="text-muted-foreground max-w-xs mx-auto mt-2">No movies have been logged yet. Start building your groups cinematic history.</p>
+            <CardContent className="flex flex-col items-center justify-center p-2 text-center">
+              {group.movies.length === 0 ? (
+                <div className="flex flex-col items-center justify-center p-20 text-center">
+                  <div className="border-4 border-dashed rounded-full p-8 mb-4">
+                    <Film size={48} className="text-muted-foreground/20" />
+                  </div>
+                  <h3 className="text-xl font-bold italic uppercase tracking-tighter">The Archive is Empty</h3>
+                  <p className="text-muted-foreground max-w-xs mx-auto mt-2 text-sm font-medium">No movies have been logged yet. Start building your cinematic history.</p>
+                </div>
+              ) : (
+                <div className="flex flex-col w-full">
+                  {group.movies.map((movie, index) => (
+                    <div key={movie.id} className={`group flex items-center justify-between p-6 transition-colors hover:bg-muted/30 ${index !== group.movies.length - 1 ? "border-b" : ""}`}>
+                      <div className="flex items-center gap-6 min-w-0">
+                        <span className="text-muted-foreground/30 font-black text-xl italic w-8">{(index + 1).toString().padStart(2, "0")}</span>
+                        <div className="space-y-1">
+                          <h4 className="font-black uppercase italic tracking-tighter text-lg leading-none group-hover:text-primary transition-colors truncate">{movie.title}</h4>
+                          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Entry secured in group archive</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-8 shrink-0">
+                        <div className="hidden md:flex gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={16} className={`${i < (movie.rating || 0) ? "fill-primary text-primary" : "fill-muted text-muted"}`} />
+                          ))}
+                        </div>
+
+                        <div className="bg-primary text-primary-foreground font-black italic px-4 py-2 rounded-lg text-lg min-w-15 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] group-hover:shadow-primary/20 transition-all">
+                          {movie.rating?.toFixed(1)}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
