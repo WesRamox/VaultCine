@@ -79,25 +79,30 @@ prisma/
 
 ### 👥 Groups
 
-- [x] `POST /api/groups` → Create group  
-- [x] `GET /api/groups` → List user groups  
-- [x] `GET /api/groups/:id` → Group details  
-- [x] `POST /api/groups/:id/invite` → Invite new member  
-- [ ] `DELETE /api/groups/:id/members/:userId` → Remove member  
+- [x] `POST /api/groups` → Create group
+- [x] `GET /api/groups` → List user groups
+- [x] `GET /api/groups/:id` → Group details
+- [x] `DELETE /api/groups/:id` → Delete group
+- [x] `POST /api/groups/:id/movies` → Rate a new movie
+- [x] `POST /api/groups/:id/invite` → Invite new member
+- [ ] `DELETE /api/groups/:id/members/:userId` → Remove member
 
 ---
 
 ## 🧬 Main Models (Prisma)
 
 ### User
+
 - Automatically created on Google login
 - Related to groups and sessions
 
 ### Group
+
 - Has an owner (`owner`)
 - Has members (`GroupMember`)
 
 ### GroupMember
+
 - N:N relationship between `User` and `Group`
 - Defines role: `owner | member`
 
@@ -185,8 +190,9 @@ Access: `http://localhost:3000`
 
 - [x] Group details page
 - [x] Invitation system
-- [ ] Movie rating per group
-- [ ] Permissions (owner vs member)
+- [x] Movie rating per group
+- [x] Permissions (owner vs member)
+- [ ] Update Group Details
 - [ ] Deploy (Railway / Vercel)
 
 ---
