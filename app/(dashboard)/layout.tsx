@@ -29,7 +29,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <div className="flex h-screen w-full">
         <DashboardSidebar session={session} pendingInvites={pendingInvites} />
         <SidebarInset>
-          <header className="bg-background sticky top-0 flex h-16 shrink-0 z-10 items-center gap-2 border-b px-4">
+          <header className="bg-background sticky top-0 flex h-16 shrink-0 z-30 items-center gap-2 border-b px-4">
             <SidebarTrigger className="ml-1" />
             <DashboardBreadcrumb />
           </header>

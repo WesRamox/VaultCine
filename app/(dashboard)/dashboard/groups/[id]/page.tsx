@@ -175,7 +175,7 @@ export default async function GroupPage({ params }: GroupPageProps) {
 
           <div className="bg-muted p-4 rounded-xl">
             <p className="text-[10px] font-black uppercase mb-2">Group Insights</p>
-            <p className="text-xs text-muted-foreground leading-relaxed">Once movies are rated, this section will display the most watched genres and top-rated directors by the group.</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">...</p>
           </div>
         </aside>
       </div>

@@ -41,9 +41,9 @@ export default async function GroupLimitedList({ session }: GroupLimitedListProp
   return (
     <>
       {lastGroups.map((group) => (
-        <Card key={group.id} className="border flex flex-row py-0 overflow-hidden">
-          <div className="h-55 w-1/2 overflow-hidden">
-            <Image width={500} height={500} src="/group.png" alt={group.name} className="w-full h-full object-cover" />
+        <Card key={group.id} className="border flex flex-col lg:flex-col xl:flex-row py-0 overflow-hidden">
+          <div className="h-55 w-full min-w-20 overflow-hidden">
+            <Image width={500} height={500} src="/group.png" alt={group.name} className="w-full h-full min-w-20 object-cover" />
           </div>
           <div className="py-5 flex flex-col w-full gap-5">
             <CardHeader>
@@ -60,8 +60,8 @@ export default async function GroupLimitedList({ session }: GroupLimitedListProp
                 </h2>
               </CardContent>
             </CardHeader>
-            <CardFooter className="flex gap-2 md:flex-row flex-col">
-              <Button asChild className="gap-2">
+            <CardFooter className="flex gap-2 flex-col sm:flex-col lg:flex-row">
+              <Button asChild className="gap-2 w-full lg:w-auto justify-center">
                 <Link href={`/dashboard/groups/${group.id}`}>
                   <Eye size={16} /> View Group
                 </Link>

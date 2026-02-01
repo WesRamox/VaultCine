@@ -27,7 +27,7 @@ export default async function Dashboard() {
           <CardDescription>Manage the groups you&apos;ve created or are part of to watch movies together.</CardDescription>
         </CardHeader>
         <Suspense fallback={<div className="flex items-center justify-center w-full">Loading...</div>}>
-          <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+          <CardContent className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-3 gap-4 w-full">
             <GroupLimitedList session={session} />
             <CreateGroupDialog />
             <Button variant={"outline"} className="p-4 h-full text-xl flex gap-2 justify-center items-center rounded-lg cursor-pointer font-normal" asChild>

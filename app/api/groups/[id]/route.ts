@@ -4,7 +4,7 @@ import { authOptions } from '../../auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const id = params.id;
+  const { id } = params;
 
   return NextResponse.json({ message: `Searching group ${id}` });
 }
@@ -16,7 +16,7 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
 
-    const { id } = await params;
+    const { id } = params;
 
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });

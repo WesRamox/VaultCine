@@ -10,8 +10,10 @@ interface InviteGroupDialogProps {
 export default function InviteGroupDialog({ groupId }: InviteGroupDialogProps) {
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button className="cursor-pointer" variant={"outline"}><UserPlus size={16} className="text-muted-foreground" /> Invite to Group</Button>
+      <DialogTrigger className="w-full lg:w-auto justify-center">
+        <Button className="cursor-pointer w-full lg:w-auto justify-center" variant={"outline"}>
+          <UserPlus size={16} className="text-muted-foreground" /> Invite to Group
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
