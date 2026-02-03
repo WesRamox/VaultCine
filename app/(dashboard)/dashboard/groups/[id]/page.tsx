@@ -22,8 +22,8 @@ export default async function GroupPage({ params }: GroupPageProps) {
 
   if (!session?.user?.id) redirect("/login");
 
-  const group = await prisma.group.findUnique({
-    where: { id },
+  const group = await prisma.group.findFirst({
+    where: { id, members: { some: { userId: session.user.id } } },
     include: {
       members: {
         include: { user: true },

@@ -42,6 +42,8 @@ export default function InviteGroupForm({ groupId }: InviteGroupFormProps) {
         description: "Please check your internet connection and try again.",
         position: "top-center",
       });
+    } finally {
+      setEmail("");
     }
   };
 
@@ -59,7 +61,7 @@ export default function InviteGroupForm({ groupId }: InviteGroupFormProps) {
             Cancel
           </Button>
         </DialogClose>
-        <Button type="submit">Send Invite</Button>
+        <Button type="submit" disabled={!email}>Send Invite</Button>
       </DialogFooter>
     </form>
   );
