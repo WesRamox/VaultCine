@@ -66,7 +66,7 @@ export default async function GroupPage({ params }: GroupPageProps) {
               </DialogContent>
             </Dialog>
           )}
-          <DeleteGroupButton groupId={group.id} />
+          {isOwner && <DeleteGroupButton groupId={group.id} />}
         </div>
       </section>
 
@@ -102,7 +102,7 @@ export default async function GroupPage({ params }: GroupPageProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-9">
-          <Card className="border-2 shadow-none min-h-[400px]">
+          <Card className="border-2 shadow-none min-h-100">
             <CardHeader className="border-b bg-muted/20">
               <CardTitle className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
                 <Film size={16} /> Movie Log

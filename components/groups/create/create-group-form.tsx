@@ -22,6 +22,7 @@ export type CreateGroupFormData = z.infer<typeof CreateGroupFormSchema>;
 
 export default function CreateGroupForm() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<CreateGroupFormData>({
     name: "",
     description: "",
@@ -30,6 +31,10 @@ export default function CreateGroupForm() {
 
   const onSubmit = async (ev: FormEvent) => {
     ev.preventDefault();
+
+    if (loading) return;
+    setLoading(true);
+
     const validation = CreateGroupFormSchema.safeParse(formData);
 
     if (!validation.success) {
@@ -37,6 +42,7 @@ export default function CreateGroupForm() {
         description: "Please check the form fields.",
         position: "top-center",
       });
+      setLoading(false);
       return;
     }
 
@@ -73,6 +79,9 @@ export default function CreateGroupForm() {
         position: "top-center",
       });
       console.error("Error creating group:", error);
+    } finally {
+      setLoading(false);
+      setFormData({ name: "", description: "", type: "COUPLE" });
     }
   };
 
@@ -105,7 +114,9 @@ export default function CreateGroupForm() {
         <DialogClose id="close-dialog" asChild>
           <Button variant="outline">Cancel</Button>
         </DialogClose>
-        <Button type="submit">Create Group</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Creating..." : "Create Group"}
+        </Button>
       </DialogFooter>
     </form>
   );

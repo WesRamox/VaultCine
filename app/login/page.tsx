@@ -20,8 +20,8 @@ export default function LoginPage() {
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background to-muted p-4">
-      <div className="w-1/2 flex flex-col items-center gap-8">
-        <Card className="rounded-2xl w-1/2 p-10 flex flex-col border-0 shadow-none bg-transparent">
+      <div className="lg:w-1/2 flex w-full flex-col items-center gap-8">
+        <Card className="rounded-2xl lg:w-1/2 w-full lg:p-10 p-2 flex flex-col border-0 shadow-none bg-transparent">
           <CardHeader className="space-y-2">
             <CardTitle className="text-5xl text-start font-normal">
               <span className="text-zinc-800">Welcome to</span> <br />
@@ -33,7 +33,7 @@ export default function LoginPage() {
           </CardHeader>
 
           <CardContent className="space-y-4">
-            <Button className="w-full p-4 text-md" size="lg" onClick={() => signIn("google", { callbackUrl: "/dashboard" })}>
+            <Button className="min-w-50 max-w-50 w-full p-4 text-md cursor-pointer" size="lg" onClick={() => signIn("google", { callbackUrl: "/dashboard" })}>
               <Image src={google} width={20} height={20} alt="Google" /> Join with Google
             </Button>
 
@@ -41,7 +41,7 @@ export default function LoginPage() {
           </CardContent>
         </Card>
       </div>
-      <div className="w-1/2">
+      <div className="w-1/2 hidden lg:flex items-center justify-center">
         <Image src="/bglogin.png" width={800} height={800} alt="Login Illustration" />
       </div>
     </div>
