@@ -21,9 +21,8 @@ export default async function GroupPage({ params }: GroupPageProps) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) redirect("/login");
-// , members: { some: { userId: session.user.id } } 
   const group = await prisma.group.findFirst({
-    where: { id },
+    where: { id, members: { some: { userId: session.user.id } }  },
     include: {
       members: {
         include: { user: true },
@@ -32,8 +31,10 @@ export default async function GroupPage({ params }: GroupPageProps) {
     },
   });
 
-  if (!group) return notFound();
-
+  if (!group) {
+    notFound();
+  }
+  
   const isOwner = group.ownerId === session.user.id;
 
   const totalRating = group.movies.reduce((acc, movie) => acc + (movie.rating ?? 0), 0);
